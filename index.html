@@ -14,12 +14,12 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- CONTROL DE MÚSICA (visible pero discreto) -->
+  <!-- CONTROL DE MÚSICA -->
   <button id="musicControl" class="music-control" aria-label="Control música" title="Reproducir / Pausar">
     <img id="musicIcon" src="assets/icons/play.webp" alt="play">
   </button>
 
-  <!-- DECOR: brillo lunar -->
+  <!-- DECORACIÓN LUMINOSA -->
   <div class="bg-lights" aria-hidden="true">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -38,15 +38,18 @@
   </header>
 
   <main class="container" id="menu">
-    <!-- Los items se renderizan por script.js -->
+    <!-- Render por script.js -->
   </main>
 
   <footer class="site-footer">
     <div class="ft-inner">
-      <div class="contacts">
+
+      <!-- *** AQUI ESTÁ LA CLASE CORRECTA *** -->
+      <div class="contacts contact-buttons">
         <a href="tel:+51982822434" class="ft-btn">Llamar</a>
         <a href="https://wa.me/51982822434" class="ft-btn" target="_blank" rel="noopener">WhatsApp</a>
       </div>
+
       <p class="copyright">MoonBar © • Sabores lunares • Hecho con dedicación (y un poco de electricidad)</p>
     </div>
   </footer>
