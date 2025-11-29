@@ -2,9 +2,10 @@
    MoonBar V2 - script.js
    Render menu, audio logic,
    interactions y animaciones.
---------------------------- */
+   --------------------------- */
 
 // -------------- DATOS (20 tragos) --------------
+
 const drinks = [
   { name: "Piña Colada", desc: "Nacido en playas tropicales: ron blanco, crema de coco y jugo de piña, batido hasta sedosidad.", why: "Prueba esto si buscas escaparte al Caribe con una sola cuchara; cremoso y festivo.", img: "l1.jpg", price: "S/ 22", tag: "Tropical" },
   { name: "Mojito Clásico", desc: "Hierbabuena, limón, azúcar y ron: fresco, herbal y perfectamente equilibrado.", why: "Ideal para quienes quieren algo ligero y refrescante que nunca falla en calor.", img: "l2.jpg", price: "S/ 18", tag: "Refrescante" },
@@ -29,11 +30,12 @@ const drinks = [
 ];
 
 // -------------- RENDER MENU --------------
+
 const menuEl = document.getElementById('menu');
 
 function createCardHTML(d){
   return `
-    <section class="card fade-up">
+    <section class="card fade-up" role="article" aria-label="${d.name}">
       <div class="card-media"><img loading="lazy" src="assets/images/${d.img}" alt="${d.name}"></div>
       <div class="card-body">
         <div class="card-title">
@@ -42,7 +44,10 @@ function createCardHTML(d){
         </div>
         <p class="desc">${d.desc}</p>
         <div class="try-reason"><strong>¿Por qué probarlo?</strong> ${d.why}</div>
-        <div class="meta-row"><div class="tag">${d.tag}</div><div style="flex:1"></div></div>
+        <div class="meta-row">
+          <div class="tag">${d.tag}</div>
+          <div style="flex:1"></div>
+        </div>
       </div>
     </section>
   `;
@@ -50,9 +55,10 @@ function createCardHTML(d){
 
 menuEl.innerHTML = `<div class="grid">${drinks.map(d => createCardHTML(d)).join('')}</div>`;
 
+
 /* ----------------------
-   AUDIO LOGIC EXPERTO
----------------------- */
+   AUDIO: versión corregida total
+   ---------------------- */
 const audio = document.getElementById('bgMusic');
 const ctrl = document.getElementById('musicControl');
 const icon = document.getElementById('musicIcon');
@@ -60,40 +66,54 @@ const icon = document.getElementById('musicIcon');
 let hasInteracted = false;
 let isPlaying = false;
 
+// Estado inicial correcto:
 audio.volume = 0;
-audio.play().catch(()=>{});
+audio.pause();
+isPlaying = false;
 
-// PRIMER CLICK: activa música real
+// Icono inicial (quieto): pause.png
+icon.src = 'assets/icons/pause.png';
+ctrl.classList.add('paused');
+ctrl.classList.remove('playing');
+
+// Primer click en la página: activar música + icono cambia a play.webp
 document.body.addEventListener('click', (ev) => {
   if (ev.target.closest && ev.target.closest('#musicControl')) return;
+
   if (!hasInteracted) {
     hasInteracted = true;
     audio.volume = 0.85;
-    audio.play();
+    audio.play().catch(()=>{});
     isPlaying = true;
-    icon.src = 'assets/icons/pause.png';
+
     ctrl.classList.add('playing');
+    ctrl.classList.remove('paused');
+    icon.src = 'assets/icons/play.webp';
   }
 });
 
-// CONTROL MANUAL
+// Click en el icono: alternar play/pause
 ctrl.addEventListener('click', (ev) => {
   ev.stopPropagation();
+
   if (!isPlaying) {
-    audio.play();
-    isPlaying = true;
-    icon.src = 'assets/icons/pause.png';
-    ctrl.classList.add('playing');
+    audio.play().then(()=> {
+      isPlaying = true;
+      ctrl.classList.add('playing');
+      ctrl.classList.remove('paused');
+      icon.src = 'assets/icons/play.webp';
+    });
   } else {
     audio.pause();
     isPlaying = false;
-    icon.src = 'assets/icons/play.webp';
     ctrl.classList.remove('playing');
+    ctrl.classList.add('paused');
+    icon.src = 'assets/icons/pause.png';
   }
 });
 
-// ACCESSIBILIDAD
-document.addEventListener('keydown', e => {
+// Espacio para accesibilidad
+document.addEventListener('keydown', (e) => {
   if (e.code === 'Space') {
     e.preventDefault();
     ctrl.click();
