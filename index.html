@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MoonBar</title>
+
+  <link rel="icon" href="assets/icons/moonbar-icon.png" type="image/png">
+  <link rel="manifest" href="manifest.json">
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- CONTROL DE MÚSICA (visible pero discreto) -->
+  <button id="musicControl" class="music-control" aria-label="Control música" title="Reproducir / Pausar">
+    <img id="musicIcon" src="assets/icons/play.webp" alt="play">
+  </button>
+
+  <!-- DECOR: brillo lunar -->
+  <div class="bg-lights" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <img src="assets/icons/logo.png" alt="MoonBar logo" class="logo" />
+      <div class="title-area">
+        <h1 class="site-title">MoonBar</h1>
+        <p class="lead">Coctelería nocturna — fusión asiática & alma peruana. Sabores que iluminan la noche.</p>
+        <p class="florish">Menú curado · ingredientes frescos · tradición reinventada</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" id="menu">
+    <!-- Los items se renderizan por script.js -->
+  </main>
+
+  <footer class="site-footer">
+    <div class="ft-inner">
+      <div class="contacts">
+        <a href="tel:+51999999999" class="ft-btn">Llamar</a>
+        <a href="https://wa.me/51999999999" class="ft-btn" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+      <p class="copyright">MoonBar © • Sabores lunares • Hecho con dedicación (y un poco de electricidad)</p>
+    </div>
+  </footer>
+
+  <!-- AUDIO -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="assets/audio/fondo.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
