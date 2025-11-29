@@ -2,10 +2,9 @@
    MoonBar V2 - script.js
    Render menu, audio logic,
    interactions y animaciones.
-   --------------------------- */
+--------------------------- */
 
 // -------------- DATOS (20 tragos) --------------
-
 const drinks = [
   { name: "Piña Colada", desc: "Nacido en playas tropicales: ron blanco, crema de coco y jugo de piña, batido hasta sedosidad.", why: "Prueba esto si buscas escaparte al Caribe con una sola cuchara; cremoso y festivo.", img: "l1.jpg", price: "S/ 22", tag: "Tropical" },
   { name: "Mojito Clásico", desc: "Hierbabuena, limón, azúcar y ron: fresco, herbal y perfectamente equilibrado.", why: "Ideal para quienes quieren algo ligero y refrescante que nunca falla en calor.", img: "l2.jpg", price: "S/ 18", tag: "Refrescante" },
@@ -34,7 +33,7 @@ const menuEl = document.getElementById('menu');
 
 function createCardHTML(d){
   return `
-    <section class="card fade-up" role="article" aria-label="${d.name}">
+    <section class="card fade-up">
       <div class="card-media"><img loading="lazy" src="assets/images/${d.img}" alt="${d.name}"></div>
       <div class="card-body">
         <div class="card-title">
@@ -43,10 +42,7 @@ function createCardHTML(d){
         </div>
         <p class="desc">${d.desc}</p>
         <div class="try-reason"><strong>¿Por qué probarlo?</strong> ${d.why}</div>
-        <div class="meta-row">
-          <div class="tag">${d.tag}</div>
-          <div style="flex:1"></div>
-        </div>
+        <div class="meta-row"><div class="tag">${d.tag}</div><div style="flex:1"></div></div>
       </div>
     </section>
   `;
@@ -54,13 +50,9 @@ function createCardHTML(d){
 
 menuEl.innerHTML = `<div class="grid">${drinks.map(d => createCardHTML(d)).join('')}</div>`;
 
-
 /* ----------------------
-   AUDIO: autoplay-friendly
-   - reproducir silencioso al cargar
-   - al primer click en la pantalla (fuera del icono) sube volumen y mantiene play
-   - icono solo alterna play/pause
-   ---------------------- */
+   AUDIO LOGIC EXPERTO
+---------------------- */
 const audio = document.getElementById('bgMusic');
 const ctrl = document.getElementById('musicControl');
 const icon = document.getElementById('musicIcon');
@@ -68,54 +60,40 @@ const icon = document.getElementById('musicIcon');
 let hasInteracted = false;
 let isPlaying = false;
 
-// Intenta reproducir en silencio al inicio (la mayoría de browsers lo permiten)
 audio.volume = 0;
-audio.play().catch(()=>{/* no importa si falla */});
+audio.play().catch(()=>{});
 
-// Listener: primer click en la página (fuera del control) activa música audible
+// PRIMER CLICK: activa música real
 document.body.addEventListener('click', (ev) => {
-  // si el click fue sobre el control, no lo contamos como "interacción inicial" (según tu pedido)
   if (ev.target.closest && ev.target.closest('#musicControl')) return;
-
   if (!hasInteracted) {
     hasInteracted = true;
     audio.volume = 0.85;
-    audio.play().catch(()=>{});
+    audio.play();
     isPlaying = true;
-    ctrl.classList.add('playing');
-    ctrl.classList.remove('paused');
     icon.src = 'assets/icons/pause.png';
+    ctrl.classList.add('playing');
   }
 });
 
-// Control explícito: click en el icono alterna play/pause
+// CONTROL MANUAL
 ctrl.addEventListener('click', (ev) => {
-  ev.stopPropagation(); // no queremos que esto cuente como "primer click" para la lógica anterior
+  ev.stopPropagation();
   if (!isPlaying) {
-    audio.play().then(()=> {
-      isPlaying = true;
-      ctrl.classList.add('playing');
-      ctrl.classList.remove('paused');
-      icon.src = 'assets/icons/pause.png';
-    }).catch(()=> {
-      // si falla por autoplay policy, activamos modo silencioso (pero no queremos eso)
-      audio.muted = false;
-      isPlaying = true;
-      ctrl.classList.add('playing');
-      ctrl.classList.remove('paused');
-      icon.src = 'assets/icons/pause.png';
-    });
+    audio.play();
+    isPlaying = true;
+    icon.src = 'assets/icons/pause.png';
+    ctrl.classList.add('playing');
   } else {
     audio.pause();
     isPlaying = false;
-    ctrl.classList.remove('playing');
-    ctrl.classList.add('paused');
     icon.src = 'assets/icons/play.webp';
+    ctrl.classList.remove('playing');
   }
 });
 
-// tecla espacio para alternar (accesibilidad)
-document.addEventListener('keydown', (e) => {
+// ACCESSIBILIDAD
+document.addEventListener('keydown', e => {
   if (e.code === 'Space') {
     e.preventDefault();
     ctrl.click();
