@@ -286,3 +286,30 @@ body {
 .music-control.paused img {
   transform: rotate(0deg);
 }
+/* Botón Yape */
+.yape-button {
+  background-color: #7a00ff;        /* color Yape */
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;                          /* espacio entre icono y texto */
+  width: fit-content;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.yape-button:hover {
+  background-color: #6900d9;
+  transform: translateY(-3px);
+}
+
+.yape-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
